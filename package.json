@@ -1,0 +1,29 @@
+{
+  "name": "lodown-zacharybergmann",
+  "version": "1.0.0",
+  "description": "A js functional library",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "istanbul cover _mocha -- test/ -R spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zacharybergmann/lodown.git"
+  },
+  "author": "zacharybergmann",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zacharybergmann/lodown/issues"
+  },
+  "homepage": "https://github.com/zacharybergmann/lodown#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "i": "^0.3.5",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0",
+    "sinon": "^1.17.7"
+  }
+}
