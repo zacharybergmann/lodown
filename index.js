@@ -40,7 +40,7 @@ function typeOf(data) {
             return "object";
         }
     }
-};
+}
 module.exports.typeOf = typeOf;
 
 
@@ -56,7 +56,7 @@ module.exports.typeOf = typeOf;
  */
 function first(arr, num) {
     if(!Array.isArray(arr)) return [];
-    if(typeof num !== 'number') return arr[0];
+    if(typeof num !== 'number') return [arr[0]];
     if(num < 0) {
         return [];
     } else if(num > arr.length) {
@@ -67,7 +67,7 @@ function first(arr, num) {
         output.push(arr[i]);
     }
     return output;
-};
+}
 module.exports.first = first;
 
 
@@ -83,7 +83,7 @@ module.exports.first = first;
  */
 function last(arr, num) {
     if(!Array.isArray(arr)) return [];
-    if(typeof num !== 'number') return arr[arr.length - 1];
+    if(typeof num !== 'number') return [arr[arr.length - 1]];
     if(num < 0) {
         return [];
     } else if(num > arr.length) {
@@ -94,7 +94,7 @@ function last(arr, num) {
         output.unshift(arr[i]);
     }
     return output;
-};
+}
 module.exports.last = last;
 
 
@@ -135,7 +135,7 @@ function indexOf(arr, val) {
         }});
     if(instances.length > 0) return instances[0];
     return -1;
-};
+}
 module.exports.indexOf = indexOf;
 
 
@@ -150,14 +150,15 @@ module.exports.indexOf = indexOf;
  * @return {Array} filter returns an Array of the values from arr that passed the test
  * or were coerced to Boolean true.
  */
- function filter(arr, test) {
+function filter(arr, test) {
     let output = [];
     each(arr, function(value, position, collection) { 
         if (!!test(value, position, collection)) {
             output.push(value);
-        }});
+        }
+    });
     return output;
-};
+}
 module.exports.filter = filter;
 
 
@@ -176,7 +177,7 @@ function reject(arr, test) {
     return filter(arr, function(value, position, collection){
         return !test(value, position, collection);
     });
-};
+}
 module.exports.reject = reject;
 
 
@@ -196,8 +197,8 @@ function partition(arr, test) {
     output.push(filter(arr, test));
     output.push(reject(arr, test));
     return output;
-};
-module.expports.partition = partition;
+}
+module.exports.partition = partition;
 
 
 /**
@@ -211,7 +212,7 @@ function unique(arr) {
         return indexOf(arr, value) === position;
     });
     return output;
-};
+}
 module.exports.unique = unique;
 
 
@@ -230,7 +231,7 @@ function map(collection, action) {
         output.push(action(value, position, collection));
     });
     return output;
-};
+}
 module.exports.map = map;
 
 
@@ -247,7 +248,7 @@ function pluck(arr, propName) {
     return map(arr, function(obj, position, collection) {
         return obj[propName];
     });
-};
+}
 module.exports.pluck = pluck;
 
 
@@ -261,7 +262,7 @@ module.exports.pluck = pluck;
  */
 function contains(arr, value){
     return indexOf(arr, value) !== -1 ? true : false;
-};
+}
 module.exports.contains = contains;
 
 
@@ -285,7 +286,7 @@ function every(collection, action) {
         }), false) === -1 ? true : false;
     }
     return reject(collection, action).length > 0 ? false : true;
-};
+}
 module.exports.every = every;
 
 
@@ -310,7 +311,7 @@ function some(collection, action) {
         }), true) === -1 ? false : true;
     }
     return filter(collection, action).length > 0 ? true : false;
-}; 
+} 
 module.exports.some = some;
 
 
@@ -332,8 +333,6 @@ module.exports.some = some;
  * from the function call on the final element of the Array.
  */
 function reduce(arr, action, seed) {
-    //loop thru elements in array. 
-    //use return from function as prev result for next element
     var rollingResult;
     if(seed === undefined) {
         rollingResult = arr[0];
@@ -347,7 +346,7 @@ function reduce(arr, action, seed) {
         });
     }
     return rollingResult;    
-};
+}
 module.exports.reduce = reduce;
 
 
@@ -364,9 +363,9 @@ module.exports.reduce = reduce;
 function extend(obj1, obj2) {
     each(arguments, function(obj, index, objs) {
         each(obj, function(val, key, obj) {
-            return obj1[key] = val;
+            obj1[key] = val;
         });
     });
    return obj1; 
-};
+}
 module.exports.extend = extend;
