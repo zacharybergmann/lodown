@@ -273,19 +273,17 @@ module.exports.contains = contains;
  * values to Booleans and then return if every value is true, otherwise false.
  * 
  * @param {Array | Object} collection The collection to be iterated through.
- * @param {Function} action The action to be performed on each value in the collection.
+ * @param {Function} test The test to be performed on each value in the collection.
  * @return {Boolean} every returns true if the result of every Function call is true, 
  * otherwise returns false. If no Function is given, every coerces the each value to
  * true or false and then returns true only if all values coerced to true, otherwise 
  * false.
  */
-function every(collection, action) {
-    if(arguments[1] === undefined) {
-        return indexOf(reject(collection, function(value, position, collection){
-            return !!value;
-        }), false) === -1 ? true : false;
+function every(collection, test) {
+    if(test === undefined) {
+        test = identity;
     }
-    return reject(collection, action).length > 0 ? false : true;
+    return reject(collection, test).length > 0 ? false : true;
 }
 module.exports.every = every;
 
@@ -298,19 +296,17 @@ module.exports.every = every;
  * true. Otherwise false is returned.
  * 
  * @param {Array | Object} collection The collection to iterate through.
- * @param {Function} The action that should be performed on each value in the collection.
+ * @param {Function} test The test that should be performed on each value in the collection.
  * @return {Boolean} some returns true if any value evaluates to true when Function is 
  * called upon it, otherwise false. If no Function is input, each collection value is 
  * coerced to a Boolean and if any of them are true, true is returned. Otherwise, false 
  * is returned.
  */
-function some(collection, action) {
-    if(arguments[1] === undefined) {
-        return indexOf(filter(collection, function(value, position, collection) {
-            return !!value;
-        }), true) === -1 ? false : true;
+function some(collection, test) {
+    if(test === undefined) {
+        test = identity;
     }
-    return filter(collection, action).length > 0 ? true : false;
+    return filter(collection, test).length > 0 ? true : false;
 } 
 module.exports.some = some;
 

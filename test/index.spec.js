@@ -219,6 +219,7 @@ describe('lodown', function() {
 
 //how to ensure either filter, reject, each is used, not for loop
 //is correct for checking array equality for mutation of inputs???
+//how to check if indexOf is used in this? regex on unique?
 describe('lodown', function() {
     describe('unique', function() {
         it('should take array and return a new array with no repeats, numbers', function() {
@@ -233,5 +234,151 @@ describe('lodown', function() {
         });
     });
 });
+
+
+describe('lodown', function() {
+    describe('map', function() {
+        it('should take array and return a new array with action performed', function() {
+            var result = lodown.map([1, 5, 7, 8, 10, 12], function(value){return value * 4;});
+            expect(result).eql([4, 20, 28, 32, 40, 48]);
+        });
+        it('should take object and return a new object with action performed', function() {
+            var result = lodown.map({a: "one", b: "three", c: "five", d: 7}, function(value, key){return value + " " + key});
+            expect(result).eql(["one a", "three b", "five c", "7 d"]);
+        });
+    });
+});
+
+
+describe('lodown', function() {
+    describe('pluck', function() {
+        it('should take array and return a new array with value for associated property for each object', function() {
+            var result = lodown.pluck([{name: "Mr. Biggles", species: "cat"}, {name: "Phred", species: "dog"}], "name");
+            expect(result).eql(["Mr. Biggles", "Phred"]);
+        });
+        it('should take object and return a new object with action performed', function() {
+            var result = lodown.pluck([{name: "Katty", species: "cat"}, {name: "Ben", species: "dog"}, {name: "Flippy"}], "species");
+            expect(result).eql(["cat", "dog", undefined]);
+        });
+    });
+});
+
+
+describe('lodown', function() {
+    describe('contains', function() {
+        it('should return true if value is in the given array (seen once)', function() {
+            var result = lodown.contains([1, 2, 3, true, null, undefined, "cat"], "cat");
+            expect(result).equal(true);
+        });
+        it('should return true if value is in the given array (seen multiple times)', function() {
+            var result = lodown.contains([1, 2, 3, true, null, undefined, "cat", 1], 1);
+            expect(result).equal(true);
+        });
+        it('should return false if value is not in the given array', function() {
+           var result = lodown.contains([1, 2, 6, "three", null, undefined, false], 0);
+           expect(result).to.equal(false);
+        });
+    });
+});
+
+
+describe('lodown', function() {
+    describe('every', function() {
+        it('should take an array and return false unless every element in the array evaluates to true', function() {
+            var result = lodown.every([1, 2, 3, 4, 5, 6, 7], function(value){return lodown.typeOf(value) === "number"});
+            expect(result).equal(true);
+        });
+        it('should take an array and return false unless every element in array evals to true', function() {
+            var result = lodown.every([1, 2, 3, true, null, undefined, "cat", 1], function(value){return lodown.typeOf(value) === "number"});
+            expect(result).equal(false);
+        });
+        it('should take an object and return false unless every value evaluates to true', function() {
+            var result = lodown.every({a: "One", name:"Doggie"}, function(value){return value[0] === 'D'});
+            expect(result).equal(false);
+        });
+        it('should take an object and return false unless every value evaluates to true', function() {
+            var result = lodown.every({a: "Dog", name:"Doggie"}, function(value){return value[0] === 'D'});
+            expect(result).equal(true);
+        });
+        it('should coerce values to true/false if no function is given, return false unless all values are truthy', function() {
+            var result = lodown.every({a: "Dog", name:"Doggie"});
+            expect(result).equal(true);
+        });
+        it('should coerce values to true/false if no function is given, return false unless all values are truthy', function() {
+            var result = lodown.every({a: 0, name:"Doggie"});
+            expect(result).equal(false);
+        });
+    });
+});
+
+
+describe('lodown', function() {
+    describe('some', function() {
+        it('should take an array and true if any value evaluates to true, else false', function() {
+            var result = lodown.some([1, "dog", 3, false, 5, "cat", 7], function(value){return lodown.typeOf(value) === "number"});
+            expect(result).equal(true);
+        });
+        it('should take an array and true if any value evaluates to true, else false', function() {
+            var result = lodown.some([false, "", null], function(value){return lodown.typeOf(value) === "number"});
+            expect(result).equal(false);
+        });
+        it('should take an object and return true unless every value evaluates to false', function() {
+            var result = lodown.some({a: "One", name:"Doggie"}, function(value){return value[0] === 'D'});
+            expect(result).equal(true);
+        });
+        it('should take an object and return true unless every value evaluates to false', function() {
+            var result = lodown.some({a: "what", name:"Neil"}, function(value){return value[0] === 'D'});
+            expect(result).equal(false);
+        });
+        it('should coerce values to true/false if no function is given, return true unless all values are falsy', function() {
+            var result = lodown.some({a: 0, name:"Doggie"});
+            expect(result).equal(true);
+        });
+        it('should coerce values to true/false if no function is given, return true unless all values are falsy', function() {
+            var result = lodown.some({a: 0, name:""});
+            expect(result).equal(false);
+        });
+    });
+});
+
+
+describe('lodown', function() {
+    describe('reduce', function() {
+        it('should take an array, action, and seed value and return correct value --number', function() {
+            var result = lodown.reduce([1, 3, 5, 7], function(rollResult, curVal, curIndex){return rollResult + curVal}, 2);
+            expect(result).equal(18);
+        });
+        it('should take an array, action, and seed value and return correct value --string', function() {
+            var result = lodown.reduce(["The", "dog", "ate", "the", "cat"], function(rollResult, curVal, curIndex){return rollResult + " " + curVal}, "1.");
+            expect(result).equal("1. The dog ate the cat");
+        });
+        it('should take an array, action, and no seed value and return correct value --number', function() {
+            var result = lodown.reduce([1, 3, 5, 7], function(rollResult, curVal, curIndex){return rollResult + curVal});
+            expect(result).equal(16);
+        });
+        it('should take an array, action, and no seed value and return correct value --string', function() {
+            var result = lodown.reduce(["The", "dog", "ate", "the", "cat"], function(rollResult, curVal, curIndex){return rollResult + " " + curVal});
+            expect(result).equal("The dog ate the cat");
+        });
+    });
+});
+
+
+describe('lodown', function() {
+    describe('extend', function() {
+        it('should take objects and add all property-value pairs to the first object', function() {
+            var result = lodown.extend({a: "one", b:"two"}, {c: "three", d: "five"}, {f: "twelve", h: "eighteen"});
+            expect(result).eql({a:"one", b:"two", c:"three", d:"five", f:"twelve", h:"eighteen"});
+        });
+        it('should take objects and add all property-value pairs to the first object', function() {
+            var result = lodown.extend({a: "one", b:"two"}, {a:"two", c:"two"});
+            expect(result).eql({a:"two", b:"two", c:"two"});
+        });
+    });
+});
+
+
+
+
 
 
