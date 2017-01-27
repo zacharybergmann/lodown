@@ -133,7 +133,7 @@ function indexOf(arr, val) {
         if(val === value) {
             instances.push(position);
         }});
-    if(instances.length > 0) return instances[0];
+    if(instances.length > 0)  return instances[0];
     return -1;
 }
 module.exports.indexOf = indexOf;
