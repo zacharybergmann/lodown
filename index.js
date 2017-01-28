@@ -348,7 +348,8 @@ module.exports.reduce = reduce;
 
 /**
  * extend: Designed to take two or more Objects and add all key-value pairs from every 
- * Object to the first argument Object. This Object is then returned.
+ * Object to the first argument Object. If a property already exists on the first Object,
+ * that property is overwritten. This Object is then returned.
  * 
  * @param {Object} obj1 The Object to have all property name and value pairs added to.
  * @param {Object} obj2 The Object that will have properties copied from.
@@ -365,3 +366,20 @@ function extend(obj1, obj2) {
    return obj1; 
 }
 module.exports.extend = extend;
+
+
+/**
+ * defaults: Designed to take two or more Objects and add all key-value pairs from every 
+ * Object to the first argument Object. If a property already exists on the first Object,
+ * that property is ignored. This Object is then returned.
+ * 
+ * @param {Object} obj1 The Object to have all property name and value pairs added to.
+ * @param {Object} obj2 The Object that will have properties copied from.
+ * @param {Object} .... Other Objects that will have properties copied from.
+ * @return {Object} extend returns the first argument Object once all of the key-value
+ * pairs from all other Objects have been added to it. 
+ */
+function defaults(obj1, obj2) {
+    
+}
+module.exports.defaults = defaults;
